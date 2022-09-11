@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "pixiv-api"
+version = "0.1.0"
+description = "一个基于pixivpy的webapi"
+authors = ["Expliyh <expliyh@outlook.com>"]
+readme = "README.md"
+packages = [{include = "pixiv_api"}]
+
+[[tool.poetry.source]]
+name = "tuna"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+default = true
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "^2.2.2"
+pixivpy3 = "^3.7.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
