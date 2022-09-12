@@ -285,7 +285,7 @@ reference = "tuna"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "e77c5ca0ddae80a9880019135eb8ecf88ce5821bbd1c9393403676cac21fa869"
+content-hash = "a4b2a517006e6708e92fac379bb110aea6781fe9f6263b94faea3ebdc90f4b1a"
 
 [metadata.files]
 certifi = [
