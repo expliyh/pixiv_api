@@ -6,6 +6,16 @@ import time
 import json
 
 
+def json_conv(json_str: str):
+    json_cvd = ""
+    for i in json_str:
+        if i == "'":
+            json_cvd += "\\'"
+        else:
+            json_cvd += i
+    return json_cvd
+
+
 class Pixiv:
 
     def get_image(self, img_id: int):
@@ -28,7 +38,9 @@ class Pixiv:
                 return row[1]
         else:
             json_str = self.api.illust_detail(img_id)
-            print (json_str)
+            json_str = json_conv(json_str)
+            print(json_str)
+
             print("New data cached: id = %s" % img_id)
             sql = "INSERT INTO artworks (id, json, time) VALUES (%s, '%s', %s)" % (img_id, json_str, time.time())
             cursor.execute(sql)
@@ -36,6 +48,7 @@ class Pixiv:
             cursor.close()
             return json_str
         json_str = self.api.illust_detail(img_id)
+        json_str = json_conv(json_str)
         print("Cache %s updated!" % img_id)
         sql = "UPDATE artworks SET json = '%s', time = %s WHERE id = %s" % (json_str, time.time(), img_id)
         return json_str
