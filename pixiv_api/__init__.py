@@ -21,7 +21,7 @@ class Pixiv:
         cursor = self.cache.cursor()
         cursor.execute(sql)
         row = cursor.fetchone()
-        if row != 0:
+        if row is not None:
             time_now = time.time()
             time_cache = int(row[2])
             if time_now - time_cache <= 86400:
