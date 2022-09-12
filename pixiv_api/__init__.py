@@ -47,7 +47,7 @@ class Pixiv:
         sql = "CREATE TABLE IF NOT EXISTS artworks(" \
               "id INTEGER PRIMARY KEY," \
               "json TEXT," \
-              "time INTEGER,);"
+              "time BIGINT,);"
         cursor = self.cache.cursor()
         cursor.execute(sql)
         self.cache.commit()
