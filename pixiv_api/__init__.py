@@ -44,7 +44,7 @@ class Pixiv:
         self.api = pixivpy3.AppPixivAPI()
         self.api.auth(refresh_token=self.refreshToken)
         self.cache = sqlite3.connect("cache.db")
-        sql = "CREATE TABLE IF NOT EXISTS artworks(" \
+        sql = "CREATE TABLE artworks(" \
               "id INTEGER PRIMARY KEY," \
               "json TEXT," \
               "time INTEGER"
