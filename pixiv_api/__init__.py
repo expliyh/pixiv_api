@@ -28,6 +28,7 @@ class Pixiv:
                 return row[1]
         else:
             json_str = self.api.illust_detail(img_id)
+            print (json_str)
             print("New data cached: id = %s" % img_id)
             sql = "INSERT INTO artworks (id, json, time) VALUES (%s, '%s', %s)" % (img_id, json_str, time.time())
             cursor.execute(sql)
