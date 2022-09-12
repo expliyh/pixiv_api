@@ -1,3 +1,4 @@
+import flask
 import pixivpy3
 import os
 import requests
@@ -24,7 +25,9 @@ class Pixiv:
         headers = {'Referer': 'https://www.pixiv.net'}
         url = json_obj['illust']['meta_single_page']['original_image_url']
         req = requests.get(url=url, headers=headers, verify=False)
-        return req
+        response = flask.make_response(req.content)
+        response.headers["Content-Type"] = "image/jpg"
+        return response
 
     def get_image_json(self, img_id: int):
         sql = "SELECT * FROM artworks WHERE id = %s" % img_id
