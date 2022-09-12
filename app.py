@@ -11,7 +11,7 @@ def get_detail(img_id):
 
 
 @app.route('/image/<int:img_id>')
-def get_detail(img_id):
+def get_json(img_id):
     pixiv = pixiv_api.Pixiv()
     return pixiv.get_image(img_id)
 
