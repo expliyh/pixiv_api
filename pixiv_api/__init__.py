@@ -24,7 +24,7 @@ class Pixiv:
         headers = {'Referer': 'https://www.pixiv.net'}
         url = json_obj['illust']['meta_single_page']['original_image_url']
         req = requests.get(url=url, headers=headers, verify=False)
-        return req.content
+        return req
 
     def get_image_json(self, img_id: int):
         sql = "SELECT * FROM artworks WHERE id = %s" % img_id
