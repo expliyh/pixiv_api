@@ -38,6 +38,7 @@ class Pixiv:
                 return row[1]
         else:
             json_str = self.api.illust_detail(img_id)
+            stori=json_str
             json_str = json_conv(json_str)
             print(json_str)
 
@@ -46,12 +47,13 @@ class Pixiv:
             cursor.execute(sql)
             self.cache.commit()
             cursor.close()
-            return json_str
+            return stori
         json_str = self.api.illust_detail(img_id)
+        stori = json_str
         json_str = json_conv(json_str)
         print("Cache %s updated!" % img_id)
         sql = "UPDATE artworks SET json = '%s', time = %s WHERE id = %s" % (json_str, time.time(), img_id)
-        return json_str
+        return stori
 
     def __init__(self):
         self.refreshToken = os.getenv("pixiv_refresh_token")
