@@ -37,9 +37,9 @@ class Pixiv:
             if time_now - time_cache <= 86400:
                 return row[1]
         else:
-            json_str = self.api.illust_detail(img_id)
-            stori = json_str
-            json_str = json_conv(json_str)
+            json_dic = self.api.illust_detail(img_id)
+            stori = json.dumps(json_dic)
+            json_str = json_conv(stori)
             print(json_str)
 
             print("New data cached: id = %s" % img_id)
