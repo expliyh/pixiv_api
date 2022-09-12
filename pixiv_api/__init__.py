@@ -19,7 +19,7 @@ def json_conv(json_str: str):
 class Pixiv:
 
     def get_image(self, img_id: int):
-        json_str:str = str(self.get_image_json(img_id))
+        json_str = self.get_image_json(img_id)
         json_obj = json.loads(json_str)
         headers = {'Referer': 'https://www.pixiv.net'}
         url = json_obj['illust']['meta_single_page']['original_image_url']
