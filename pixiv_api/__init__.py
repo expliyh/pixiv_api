@@ -16,7 +16,6 @@ class Pixiv:
         req = requests.get(url=url, headers=headers, verify=False)
         return req.content
 
-
     def get_image_json(self, img_id: int):
         sql = "SELECT * FROM artworks WHERE id = %s" % img_id
         cursor = self.cache.cursor()
