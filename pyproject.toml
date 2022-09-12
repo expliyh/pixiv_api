@@ -6,10 +6,6 @@ authors = ["Expliyh <expliyh@outlook.com>"]
 readme = "README.md"
 packages = [{include = "pixiv_api"}]
 
-[[tool.poetry.source]]
-name = "tuna"
-url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
-default = true
 
 [tool.poetry.dependencies]
 python = "^3.10"
