@@ -21,16 +21,35 @@ class Pixiv:
 
     def get_image(self, img_id: int):
         json_str = self.get_image_json(img_id)
-        json_obj = json.loads(json_str)
+        json_list = json.loads(json_str)
         headers = {'Referer': 'https://www.pixiv.net'}
-        url = json_obj['illust']['meta_single_page']['original_image_url']
+        try:
+            url = json_list['illust']['meta_single_page']['original_image_url']
+        except KeyError as e:
+            return "出错了：该ID对应的可能不是单张图片。"
+        req = requests.get(url=url, headers=headers, verify=False)
+        response = flask.make_response(req.content)
+        response.headers["Content-Type"] = "image/jpg"
+        return response
+
+    def get_images(self, img_id:int, img_num:int):
+        json_str = self.get_image_json(img_id)
+        json_list = json.loads(json_str)
+        headers = {'Referer': 'https://www.pixiv.net'}
+        try:
+            page_count = json_list['illust']['page_count']
+            if img_num>page_count:
+                return "错误：图片超范围"
+            url = json_list['illust']['meta_pages'][img_num-1]['image_urls']['original']
+        except KeyError as e:
+            return "出错了：该ID对应的可能不是多张图片。"
         req = requests.get(url=url, headers=headers, verify=False)
         response = flask.make_response(req.content)
         response.headers["Content-Type"] = "image/jpg"
         return response
 
     def get_image_json(self, img_id: int):
-        sql = "SELECT * FROM artworks WHERE id = %s" % img_id
+        sql = f"SELECT * FROM artworks WHERE id = {img_id}"
         cursor = self.cache.cursor()
         cursor.execute(sql)
         row = cursor.fetchone()
@@ -38,15 +57,15 @@ class Pixiv:
             time_now = time.time()
             time_cache = int(row[2])
             if time_now - time_cache <= 86400:
+                cursor.close()
                 return row[1]
         else:
             json_dic = self.api.illust_detail(img_id)
             stori = json.dumps(json_dic)
             json_str = json_conv(stori)
             print(json_str)
-
             print("New data cached: id = %s" % img_id)
-            sql = "INSERT INTO artworks (id, json, time) VALUES (%s, '%s', %s)" % (img_id, json_str, time.time())
+            sql = f'INSERT INTO artworks (id, json, "time") VALUES ({img_id}, \'{json_str}\', {time.time()})'
             cursor.execute(sql)
             self.cache.commit()
             cursor.close()
@@ -55,7 +74,10 @@ class Pixiv:
         stori = json_str
         json_str = json_conv(json_str)
         print("Cache %s updated!" % img_id)
-        sql = "UPDATE artworks SET json = '%s', time = %s WHERE id = %s" % (json_str, time.time(), img_id)
+        sql = f"UPDATE artworks SET json = '{json_str}', time = {time.time()} WHERE id = {img_id}"
+        cursor.execute(sql)
+        self.cache.commit()
+        cursor.close()
         return stori
 
     def __init__(self):
